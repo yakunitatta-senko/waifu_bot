@@ -1,4 +1,5 @@
 import os 
+import time
 os.system("pip install discord")
 import discord 
 from discord.ext import commands
@@ -40,6 +41,7 @@ async def on_ready():
 
 @bot.command()
 async def w(ctx):
+  while True:
     sfw_waifu: str = client.sfw(category='waifu')
 
     embed = discord.Embed(title="", description="", color = 0xFF0000)
@@ -55,6 +57,18 @@ async def w(ctx):
     embed.set_image(url=sfw_waifu)
     message = await ctx.reply(embed=embed)
     await message.add_reaction('✅')
+    try:
+            # Wait for a reaction to the embed for up to 10 seconds
+            reaction, user = await bot.wait_for('reaction_add', timeout=10.0, check=lambda r, u: u != bot.user and str(r.emoji) == '✅')
+    except asyncio.TimeoutError:
+            # If no reaction is added within 10 seconds, break the loop
+            break
+
+        # If a reaction was added, continue to the next iteration of the loop
+    await.send("OwO Loading More Wiafu's")
+    time.sleep(20)
+    continue
+    time.sleep(10)
     
   
 
