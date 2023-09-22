@@ -1,3 +1,26 @@
+import os
+import requests
+from flask import Flask
+from threading import Thread
+app = Flask('')
+@app.route('/')
+def main():
+    return "Waifu Is now alive!"
+def run():
+    app.run(host="0.0.0.0", port=8080)
+def keep_alive():
+    server = Thread(target=run)
+    server.start()
+
+#Runs the bot host link
+
+keep_alive()
+  
+
+
+
+
+
 import os 
 import time
 os.system("pip install discord")
@@ -89,7 +112,7 @@ async def w(ctx):
             points_message = f'{user.mention} has {user_points[user_id]} points!'
             if image_url:
                 points_message += f'\nImage URL: {image_url}'
-            await ctx.send(points_message)
+            await ctx.send("```-```")
     except asyncio.TimeoutError:
             # If no reaction is added within 10 seconds, break the loop
             break
@@ -137,8 +160,11 @@ async def on_reaction_add(reaction, user):
                     await image_url_channel.send(image_url)
                 embed = reaction.message.embeds[0]  # Get the existing embed
                 await reaction.message.edit(embed=embed)
-                await reaction.message.channel.send(f'{user.mention} reacted with ✅! So its basiclly theirs now',reference=reaction.message)
+                await reaction.message.channel.send(f'{user.mention} reacted with ✅, {user.mention} has {user_points[str(user.id)]} points!',reference=reaction.message)
 
+     # Update the user_points.json file
+            with open(points_file, 'w') as file:
+                json.dump(user_points, file)
               
 @bot.event
 async def on_reaction_remove(reaction, user):
